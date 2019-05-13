@@ -19,6 +19,13 @@ public class SearchArray {
 		
 		String temp = new String();
 		
+		// 브라켓 구분
+		for(String each : arrayList) {
+			if(each.indexOf("[") > -1) {
+				
+			}
+		}
+		
 		// 배열 검사
 		for(String each : arrayList) {
 			if(each.indexOf("[") > -1) {
