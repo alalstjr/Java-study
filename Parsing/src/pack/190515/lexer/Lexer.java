@@ -42,16 +42,14 @@ public class Lexer {
 		int position = 0;
 		Token token = null;
 		do {
+			System.out.println(token+" token");
+			
 			token = separateToken(source, position);
-			System.out.println(token+"소스");
 			if (token != null) {
-				System.out.println("토큰 null");
 				position = token.getEndIndex();
 				result.add(token);
 			}
 		} while (token != null && position != source.length());
-		
-		System.out.println("while 밖");
 		
 		if (position != source.length()) {
 			throw new AnalyzerException("위치 어휘 오류 # "+ position, position);
@@ -97,7 +95,7 @@ public class Lexer {
 	*
 	*/
 	private Token separateToken(String source, int fromIndex) {
-		System.out.println(fromIndex);
+		
 		if (fromIndex < 0 || fromIndex >= source.length()) {
 			throw new IllegalArgumentException("입력 스트림의 인덱스가 잘못되었습니다!");
 		}
@@ -137,13 +135,13 @@ public class Lexer {
 		regEx.put(TokenType.WhiteSpace, "( ).*");
 		regEx.put(TokenType.Tab, "(\\t).*");
 		regEx.put(TokenType.NewLine, "(\\n).*");
-		regEx.put(TokenType.String, "(\\').*");
 		
 		//	형태가 있는 정규식 토큰	
 		regEx.put(TokenType.DOOROPEN, "(\\[).*");
 		regEx.put(TokenType.DOORCLOSE, "(\\]).*");
 		regEx.put(TokenType.COMMA, "(,).*");
-		regEx.put(TokenType.Identifier, "\\b([a-zA-Z]{1}[0-9a-zA-Z_]{0,31})\\b.*");
+		regEx.put(TokenType.Identifier, "([\\'][a-zA-Z]{0,31}[0-9a-zA-Z_]{0,31}[\\']).*");
+		//regEx.put(TokenType.Identifier, "\\b([\\'][a-zA-Z]{1, 31}[0-9a-zA-Z_]{0,31})\\b.*");
 		regEx.put(TokenType.IntConstant, "\\b(\\d{1,9})\\b.*");
 		regEx.put(TokenType.False, "\\b(false)\\b.*");
 		regEx.put(TokenType.True, "\\b(true)\\b.*");
