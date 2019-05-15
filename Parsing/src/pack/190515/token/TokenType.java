@@ -27,6 +27,6 @@ public enum TokenType {
 	//	@return 토큰이 보조 인 경우는 true, 그렇지 않은 경우는 false
 	public boolean isAuxiliary() {
 		return this == BlockComment || this == LineComment || this == NewLine || this == Tab
-				|| this == WhiteSpace || this == Identifier;
+				|| this == WhiteSpace;
 	}
 }
