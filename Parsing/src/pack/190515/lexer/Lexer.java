@@ -45,14 +45,16 @@ public class Lexer {
 			token = separateToken(source, position);
 			System.out.println(token+"소스");
 			if (token != null) {
-				System.out.println("도달");
+				System.out.println("토큰 null");
 				position = token.getEndIndex();
 				result.add(token);
 			}
 		} while (token != null && position != source.length());
+		
+		System.out.println("while 밖");
+		
 		if (position != source.length()) {
 			throw new AnalyzerException("위치 어휘 오류 # "+ position, position);
-
 		}
 	}
 	
@@ -95,15 +97,28 @@ public class Lexer {
 	*
 	*/
 	private Token separateToken(String source, int fromIndex) {
+		System.out.println(fromIndex);
 		if (fromIndex < 0 || fromIndex >= source.length()) {
 			throw new IllegalArgumentException("입력 스트림의 인덱스가 잘못되었습니다!");
 		}
 		for (TokenType tokenType : TokenType.values()) {
+			
+			// Pattern 에서의 fromIndex 는 검색할 대상의 위치라 생각하면 됩니다.
+			// dotall 모드에서 표현식 . 은 어떠한 문자든이란 의미로 매칭된다. 
+			// 마침 문자까지 합쳐서 말이다. 			
 			Pattern p = Pattern.compile(".{" + fromIndex + "}" + regEx.get(tokenType),
 					Pattern.DOTALL);
+			
 			Matcher m = p.matcher(source);
+			//  source의 값이 저희가 선언한 패턴 p 에 맞는 조건인지 검사해서 m에 저장합니다.
+			
 			if (m.matches()) {
 				String lexema = m.group(1);
+				// group() (패턴에 맞는 값 1개씩 찾아내기)
+				// group()을 하면 모두 반환하고
+				// group(1)은 첫번째 sub group
+				// group(2)는 두번째 sub group을 반환
+				
 				return new Token(fromIndex, fromIndex + lexema.length(), tokenType, lexema);
 			}
 		}
@@ -122,10 +137,16 @@ public class Lexer {
 		regEx.put(TokenType.WhiteSpace, "( ).*");
 		regEx.put(TokenType.Tab, "(\\t).*");
 		regEx.put(TokenType.NewLine, "(\\n).*");
+		regEx.put(TokenType.String, "(\\').*");
 		
 		//	형태가 있는 정규식 토큰	
 		regEx.put(TokenType.DOOROPEN, "(\\[).*");
 		regEx.put(TokenType.DOORCLOSE, "(\\]).*");
 		regEx.put(TokenType.COMMA, "(,).*");
+		regEx.put(TokenType.Identifier, "\\b([a-zA-Z]{1}[0-9a-zA-Z_]{0,31})\\b.*");
+		regEx.put(TokenType.IntConstant, "\\b(\\d{1,9})\\b.*");
+		regEx.put(TokenType.False, "\\b(false)\\b.*");
+		regEx.put(TokenType.True, "\\b(true)\\b.*");
+		regEx.put(TokenType.Null, "\\b(null)\\b.*");
 	}
 }
