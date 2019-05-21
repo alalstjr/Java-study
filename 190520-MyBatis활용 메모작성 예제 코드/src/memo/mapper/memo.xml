@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- memo.mapper 패키지의 memo.xml -->
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="memo">
+	<select 
+		id="listAll" 
+		resultType="memo.dto.MemoDTO"
+	>
+		<!-- select * from memo -->
+		select num, writer, memo, date_format(post_date, "%Y-%m-%d") post_date
+		from memo
+		order by num desc
+	</select>
+	
+	<!-- parameterType 생략 가능 이미 데이터가 전달되어 올때 정의되어 오기때문 -->
+	<insert 
+		id="insert" 
+		parameterType="memo.dto.MemoDTO"
+	>
+		<!-- select * from memo -->
+		insert into memo (writer, memo) values (#{writer}, #{memo});
+	</insert>
+</mapper>
