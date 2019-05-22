@@ -24,8 +24,9 @@ public class MyBatisManager {
 	public static SqlSessionFactory getInstance() {
 		Reader reader = null;
 		try {
-			// java resources의 src
-			reader = Resources.getResourceAsReader("sqlmap/sqlMapConfig.xml");
+		    String resource = "sqlmap/sqlMapConfig.xml";
+		    // java resources의 src
+		    reader = Resources.getResourceAsReader(resource);
 			// sqlSessionFactory 생성기
 			instance = new SqlSessionFactoryBuilder().build(reader);
 		} catch (Exception e) {
@@ -40,11 +41,4 @@ public class MyBatisManager {
 		
 		return instance;
 	}
-
-	public static void setInstance(SqlSessionFactory instance) {
-		MyBatisManager.instance = instance;
-	}
-	
-	
-	
 }
