@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- memo.mapper 패키지의 memo.xml -->
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="page">
+	<!-- 이름 + 메모로 찾기 -->
+	<select 
+		id="memoList" 
+		resultType="p"
+	>
+		<!-- select * from memo -->
+		select num, writer, memo, date_format(post_date, "%Y-%m-%d") post_date
+		from memo limit #{start}, #{end} 
+	</select>
+	
+	<!-- 레코드 갯수 결과는 int형이므로 resultType=int -->
+	<select id="memoCount" resultType="int">
+		select count(*) from memo
+	</select>
+</mapper>
