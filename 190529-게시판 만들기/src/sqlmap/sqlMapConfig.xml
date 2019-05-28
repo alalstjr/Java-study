@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ 
+<!--  꼭 순서대로 -->    
+<configuration>
+ 
+    <!-- 알리아스 설정 -->
+    <typeAliases>
+        <typeAlias type="board.dto.BoardDTO" alias="b"/>
+    </typeAliases>
+    
+    <!-- DB 셋팅 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/tutorial?verifyServerCertificate=false&amp;useSSL=true"/>
+                <property name="username" value=""/>
+                <property name="password" value=""/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <!-- SQL -->
+    <mappers>
+        <mapper resource="board/mapper/board.xml"/>
+    </mappers>
+</configuration>  
