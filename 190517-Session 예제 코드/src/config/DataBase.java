@@ -7,8 +7,8 @@ public class DataBase {
 	public static Connection getConnection() {
 		try {
 			final String dbURL = "jdbc:mysql://localhost:3306/tutorial?verifyServerCertificate=false&useSSL=true";
-			final String dbID = "root";
-			final String dbPassword = "cmd%*%&1591";
+			final String dbID = "";
+			final String dbPassword = "";
 			Class.forName("com.mysql.jdbc.Driver");
 			return DriverManager.getConnection(dbURL, dbID, dbPassword);
 		} catch (Exception e) {
