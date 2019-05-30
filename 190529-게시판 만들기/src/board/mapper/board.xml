@@ -7,14 +7,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
+	<!-- 게시물 목록 -->
 	<select 
 	id="List"
 	resultType="b"
 	>
 		select num, writer, subject, reg_date, readcount, filename, filesize,
-		down, ref, re_step, re_level from board order by num desc
+		down, ref, re_step, re_level 
+		from board
+		where shows = 'y' 
+		order by num desc
 	</select>
 	
+	<!-- 게시물 추가 -->
 	<insert 
 	id="insert"
 	>
@@ -23,4 +28,58 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	( #{writer}, #{subject}, #{password}, 1, #{re_step}, #{re_level}, #{content}, #{ip}, #{filename}, #{filesize}
 	)
 	</insert>
+	
+	<!-- 게시물 번호에 해당하는 첨부파일 이름 -->
+	<select 
+	id="getFileName" 
+	resultType="String"
+	>
+		select filename from board where num=#{num}
+	</select>
+	
+	<!-- 다운로드 횟수증가 처리 -->
+	<update 
+	id="plusDown"
+	>
+		update board set down = down + 1 where num = #{num}
+	</update>
+	
+	<!-- 조회수 증가 처리 -->
+	<update 
+	id="plusReadCount"
+	>
+	UPDATE board SET readcount = readcount + 1 WHERE num = #{num}
+	</update>
+	
+	<!-- 상세화면용 to 리턴 -->
+	<select 
+	id="view"
+	resultType="b"
+	>
+	SELECT * FROM board WHERE num = #{num};
+	</select>
+	
+	<!-- 게시물 비밀번호 체크 -->
+	<select 
+	id="pass_check"
+	resultType="String"
+	>
+	SELECT password FROM board WHERE num =#{num} and password = #{password}
+	</select>	
+	
+	<!-- 게시물 업데이트 수정 -->
+	<update 
+	id="update"
+	>
+	UPDATE board 
+	set writer=#{writer}, subject=#{subject}, content=#{content}, filename=#{filename},
+	filesize=#{filesize}, down=#{down} where num = #{num}
+	</update>
+	
+	<!-- 게시물 삭제/숨김 -->
+	<update 
+	id="delete"
+	>
+	UPDATE board set shows='n' where num = #{num}
+	</update>
 </mapper>
