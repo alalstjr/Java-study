@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 
+import board.dto.BoardCommentDTO;
 import board.dto.BoardDTO;
 import sqlmap.MyBatisManager;
 
@@ -219,5 +220,27 @@ public class BoardDAO {
 		{
 			if(session != null) session.close();
 		}
+	}
+	
+	// 댓글 목록 리턴
+	public List<BoardCommentDTO> commentList(int num) 
+	{
+		List<BoardCommentDTO> list = null;
+		SqlSession session = null;
+		try 
+		{ 
+			session = MyBatisManager.getInstance().openSession();
+			list = session.selectList("board.commentList", num);
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		} 
+		finally 
+		{
+			if(session != null) session.close();
+		}
+		
+		return list;
 	}
 }

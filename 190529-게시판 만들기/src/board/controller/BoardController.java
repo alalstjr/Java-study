@@ -18,6 +18,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import board.dao.BoardDAO;
+import board.dto.BoardCommentDTO;
 import board.dto.BoardDTO;
 import common.Constants;
 
@@ -323,6 +324,21 @@ public class BoardController extends HttpServlet {
 			page = request.getContextPath() + 
 					"/board_servlet/list.do";
 			response.sendRedirect(page);
+		}
+		else if(url.indexOf("commentList.do") != -1)
+		{
+			int num = Integer.parseInt(request.getParameter("num"));
+			
+			// 댓글 목록이 list로 넘어옴
+			List<BoardCommentDTO> list = dao.commentList(num);
+			System.out.println("안녕");
+			// 출력 페이지에서 읽을 수 있도록 request 영역에 저장
+			request.setAttribute("list", list);
+			
+			// 화면 전환
+			String page = "/board/comment_list.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
 		}
 	}
 
