@@ -54,11 +54,11 @@ public class BoardCommentDTO {
 		this.content = content;
 	}
 
-	public final Date getReg_date() {
+	public final Date getreg_date() {
 		return reg_date;
 	}
 
-	public final void setReg_date(Date reg_date) {
+	public final void setreg_date(Date reg_date) {
 		this.reg_date = reg_date;
 	}
 

@@ -13,10 +13,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	resultType="b"
 	>
 		select num, writer, subject, reg_date, readcount, filename, filesize,
-		down, ref, re_step, re_level 
+		down, ref, re_step, re_level,
+		(select count(*) from board_comment where board_num = num) comment_count
 		from board
 		where shows = 'y' 
-		order by num desc
+		order by ref desc, re_step asc
 	</select>
 	
 	<!-- 게시물 추가 -->
@@ -27,6 +28,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	values 
 	( #{writer}, #{subject}, #{password}, 1, #{re_step}, #{re_level}, #{content}, #{ip}, #{filename}, #{filesize}
 	)
+	</insert>
+	
+	<!-- 게시물 답글 추가 -->
+	<insert 
+	id="reply"
+	>
+	insert into board (writer, subject, password, ref, re_step, re_level, content, ip, filename, filesize)
+	values 
+	( #{writer}, #{subject}, #{password}, #{ref}, #{re_step}, #{re_level}, #{content}, #{ip}, #{filename}, #{filesize}
+	)
+	</insert>
+	<!-- 답글의 출력 순서 조정 -->
+	<insert 
+	id="updateStep"
+	>
+	update board
+	set re_step = re_step+1
+	where ref=#{ref} and re_step >= #{re_step}
 	</insert>
 	
 	<!-- 게시물 번호에 해당하는 첨부파일 이름 -->
@@ -82,4 +101,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	>
 	UPDATE board set shows='n' where num = #{num}
 	</update>
+	
+	<!-- 댓글 쓰기 -->
+	<insert 
+	id="commentAdd"
+	>
+	insert into board_comment
+		(board_num, writer, content) values (#{board_num}, #{writer}, #{content});
+	</insert>
+	
+	<!-- 댓글 목록 -->
+	<select 
+	id="commentList"
+	resultType="board.dto.BoardCommentDTO"
+	>
+	select * from board_comment
+	where board_num = #{board_num}
+	order by comment_num
+	</select>
+		
+	<insert 
+	id=""
+	>
+		insert into board 
+			(writer, subject, password, ref, re_step, re_level, content, ip, filename, filesize)
+			values
+			(#{writer}, #{subject}, #{password}, #{ref}, #{re_step}, #{re_level}, #{content}, #{ip}, #{filename}, #{filesize})
+	</insert>
+	
 </mapper>

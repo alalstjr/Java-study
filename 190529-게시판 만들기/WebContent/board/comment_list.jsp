@@ -17,8 +17,8 @@
 			<td>
 				${row.writer}
 				<!-- JSTP fmt 포멧 -->
-				( <fmt:formatDate value="${row.reg_date}"
-				pattern = "yyyy-MM-dd hh:mm:ss") /> <br/>
+				( <fmt:formatDate value="${row.ref_date}"
+				pattern = "yyyy-MM-dd hh:mm:ss" />) <br/>
 				${row.content}
 			</td>
 		</tr>

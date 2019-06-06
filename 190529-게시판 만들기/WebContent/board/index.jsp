@@ -14,6 +14,6 @@ response.sendRedirect(
 		request.getContextPath()+"/board_servlet/list.do");
 >
  -->
-<c:redirect url="/board_servlet/board_list.do"></c:redirect>
+<c:redirect url="/board_servlet/list.do"></c:redirect>
 </body>
 </html>

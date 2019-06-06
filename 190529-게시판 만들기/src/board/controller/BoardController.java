@@ -331,7 +331,6 @@ public class BoardController extends HttpServlet {
 			
 			// 댓글 목록이 list로 넘어옴
 			List<BoardCommentDTO> list = dao.commentList(num);
-			System.out.println("안녕");
 			// 출력 페이지에서 읽을 수 있도록 request 영역에 저장
 			request.setAttribute("list", list);
 			
@@ -339,6 +338,70 @@ public class BoardController extends HttpServlet {
 			String page = "/board/comment_list.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			rd.forward(request, response);
+		}
+		else if(url.indexOf("commentAdd.do") != -1)
+		{
+			BoardCommentDTO dto = new BoardCommentDTO();
+			int board_num = Integer.parseInt(request.getParameter("board_num"));
+			String writer = request.getParameter("writer");
+			String content = request.getParameter("content");
+			
+			dto.setBoard_num(board_num);
+			dto.setWriter(writer);
+			dto.setContent(content);
+			
+			System.out.println(dto);
+		
+			// 레코드가 추가됨
+			dao.commentAdd(dto);
+			// 실행이 끝나면 view.jsp의 콜백함수(success)로 넘어감
+		}
+		else if(url.indexOf("reply.do") != -1) 
+		{
+			// 게시물 번호 조회
+			int num = Integer.parseInt(request.getParameter("num"));
+			// 게시물 내용을 dto로 받음
+			BoardDTO dto = dao.view(num, false);
+			// 답변 작성의 편의를 위해 reply.jsp 페이지에 dto를 전달
+			dto.setContent("---게시물의 내용---\n" + dto.getContent());
+			request.setAttribute("dto", dto);
+			String page = "/board/reply.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+		}
+		else if(url.indexOf("insertReply.do") != -1) 
+		{
+			int num = Integer.parseInt(request.getParameter("num"));
+			// 원글 내용
+			BoardDTO dto = dao.view(num, false);
+			int ref = dto.getref(); // 답변 그룹번호
+			int re_step = dto.getRe_step() + 1; // 출력 순번
+			int re_level = dto.getRe_level() + 1; // 답변 단계
+			
+			// 답변 내용
+			String writer = request.getParameter("writer");
+			String subject = request.getParameter("subject");
+			String content = request.getParameter("content");
+			String password = request.getParameter("password");
+			
+			dto.setWriter(writer);
+			dto.setSubject(subject);
+			dto.setContent(content);
+			dto.setPassword(password);
+			dto.setref(ref);
+			dto.setRe_level(re_level);
+			dto.setRe_step(re_step);
+			// 첨부파일 관련
+			dto.setFilename("-");
+			dto.setFilesize(0);
+			dto.setDown(0);
+			// 답글 순서 조정
+			dao.updateStep(ref, re_step);
+			// 답글 쓰기
+			dao.reply(dto);
+			// 목록으로 이동
+			String page = "/board_servlet/list.do";
+			response.sendRedirect(request.getContextPath() + page);
 		}
 	}
 

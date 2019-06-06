@@ -9,7 +9,7 @@ public class BoardDTO {
 	private String password;
 	private Date reg_date;
 	private int readcount;
-	private int reg;
+	private int ref;
 	private int re_step;
 	private int re_level;
 	private String content;
@@ -48,10 +48,10 @@ public class BoardDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Date getReg_date() {
+	public Date getreg_date() {
 		return reg_date;
 	}
-	public void setReg_date(Date reg_date) {
+	public void setreg_date(Date reg_date) {
 		this.reg_date = reg_date;
 	}
 	public int getReadcount() {
@@ -60,11 +60,11 @@ public class BoardDTO {
 	public void setReadcount(int readcount) {
 		this.readcount = readcount;
 	}
-	public int getReg() {
-		return reg;
+	public int getref() {
+		return ref;
 	}
-	public void setReg(int reg) {
-		this.reg = reg;
+	public void setref(int ref) {
+		this.ref = ref;
 	}
 	public int getRe_step() {
 		return re_step;
@@ -124,7 +124,7 @@ public class BoardDTO {
 	@Override
 	public String toString() {
 		return "BoardDTO [num=" + num + ", writer=" + writer + ", subject=" + subject + ", password=" + password
-				+ ", reg_date=" + reg_date + ", readcount=" + readcount + ", reg=" + reg + ", re_step=" + re_step
+				+ ", reg_date=" + reg_date + ", readcount=" + readcount + ", ref=" + ref + ", re_step=" + re_step
 				+ ", re_level=" + re_level + ", content=" + content + ", ip=" + ip + ", comment_count=" + comment_count
 				+ ", filename=" + filename + ", filesize=" + filesize + ", down=" + down + ", ext=" + ext + "]";
 	}

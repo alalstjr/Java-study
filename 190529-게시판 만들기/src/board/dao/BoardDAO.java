@@ -243,4 +243,67 @@ public class BoardDAO {
 		
 		return list;
 	}
+	
+	// 댓글 작성
+	public void commentAdd(BoardCommentDTO dto) 
+	{
+		SqlSession session = null;
+		try 
+		{
+			session = MyBatisManager.getInstance().openSession();
+			session.insert("board.commentAdd", dto); // 레코드가 추가됨
+			session.commit(); // 변경사항 확정
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		} 
+		finally 
+		{
+			if(session != null) session.close();
+		}
+	}
+	
+	// 답변글 등록
+	public void reply(BoardDTO dto) 
+	{
+		SqlSession session = null;
+		try 
+		{
+			session = MyBatisManager.getInstance().openSession();
+			session.insert("board.reply", dto); // 레코드가 추가됨
+			session.commit(); // 변경사항 확정
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		} 
+		finally 
+		{
+			if(session != null) session.close();
+		}
+	}
+	
+	// 답글의 순서 조정
+	public void updateStep(int ref, int re_step) 
+	{
+		SqlSession session = null;
+		try 
+		{
+			session = MyBatisManager.getInstance().openSession();
+			BoardDTO dto = new BoardDTO();
+			dto.setref(ref);
+			dto.setRe_step(re_step);
+			session.update("board.updateStep", dto); // 레코드가 추가됨
+			session.commit(); // 변경사항 확정
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		} 
+		finally 
+		{
+			if(session != null) session.close();
+		}
+	}
 }

@@ -50,6 +50,7 @@
 				<a href="${path}/board_servlet/view.do?num=${dto.num}">
 					${dto.subject}
 				</a>
+				[ ${dto.comment_count} ] 
 			</td>
 			<td>${dto.reg_date}</td>
 			<td>${dto.readcount}</td>
